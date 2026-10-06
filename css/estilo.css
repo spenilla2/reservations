@@ -1,0 +1,33 @@
+body{
+	
+}
+.fondo{
+	max-width : 80%; 
+	min-width: 70%;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+	-webkit-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    -moz-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+}
+.resdia{
+	max-width:90%;
+	margin:0.8em;
+	min-width: 50%;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+	-webkit-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    -moz-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);	
+}
+.imgerror{
+	max-width:30%;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+	-webkit-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    -moz-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+    box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
+}
