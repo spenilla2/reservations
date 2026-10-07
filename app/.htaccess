@@ -1,0 +1,4 @@
+# El codigo de la aplicacion no se sirve por web; solo se incluye desde los archivos de entrada.
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>

@@ -1,0 +1,367 @@
+/* Gestion de una mesa del salon (se abre dentro de la ventana modal del tablero).
+   Se carga despues de bootstrap.css y salon_oscuro.css. */
+body {
+	margin: 0;
+	padding: 20px 24px;
+	font-size: 15px;
+}
+
+/* --- Encabezado: mesa, estado y datos de la mesa --- */
+.mesa-cabecera {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.mesa-cabecera h1 {
+	margin: 0;
+	font-size: 28px;
+	font-weight: 700;
+}
+
+.mesa-dato {
+	color: #a9a9b3;
+	font-size: 14px;
+}
+
+.insignia {
+	padding: 4px 12px;
+	border: 1px solid;
+	border-radius: 999px;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.insignia.libre {
+	border-color: #6bdc8b;
+	color: #6bdc8b;
+}
+
+.insignia.ocupada {
+	border-color: #ffb454;
+	color: #ffb454;
+}
+
+/* --- Zona de contenido: aqui escribe scripts.js el resultado de cada accion --- */
+#respuesta {
+	min-height: 120px;
+}
+
+#respuesta > p.pbien,
+#respuesta > p.perror {
+	margin: 24px 0 14px;
+	font-size: 18px;
+}
+
+/* --- Mesa libre: tres opciones grandes --- */
+.opciones-titulo {
+	margin: 0 0 10px;
+	color: #a9a9b3;
+	font-size: 14px;
+}
+
+.opciones {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 12px;
+	margin: 0 0 18px;
+}
+
+.opcion {
+	margin: 0;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.opcion input {
+	position: absolute;
+	opacity: 0;
+}
+
+.opcion-caja {
+	display: block;
+	height: 100%;
+	padding: 14px 16px;
+	border: 1px solid #555;
+	border-radius: 12px;
+	background: #0d0d10;
+	transition: border-color 0.15s, background 0.15s;
+}
+
+.opcion:hover .opcion-caja {
+	border-color: #aaa;
+}
+
+.opcion input:focus-visible + .opcion-caja {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.opcion input:checked + .opcion-caja {
+	border-color: #d42a38;
+	background: rgba(178, 22, 35, 0.22);
+}
+
+.opcion-nombre {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.opcion-detalle {
+	display: block;
+	color: #a9a9b3;
+	font-size: 13px;
+	line-height: 1.35;
+}
+
+/* Formulario que llega por AJAX segun la opcion elegida (vista salon/opciones_asignacion). */
+#divCliVip {
+	padding: 16px 18px;
+	border: 1px solid #333;
+	border-radius: 12px;
+}
+
+#divCliVip:empty {
+	display: none;
+}
+
+#divCliVip > div > b,
+#divCliVip > br + div > b {
+	display: block;
+	margin: 12px 0 4px;
+}
+
+#divCliVip > div > b:first-child {
+	margin-top: 0;
+}
+
+#divCliVip br {
+	display: none;
+}
+
+#divCliVip select,
+#divCliVip input[type="text"] {
+	width: 100%;
+	max-width: 420px;
+	height: 38px;
+	padding: 0 10px;
+	border-radius: 8px;
+}
+
+#divCliVip input[type="range"] {
+	width: 100%;
+	max-width: 420px;
+	margin-top: 4px;
+}
+
+#divCliVip #cper {
+	display: inline-block;
+	margin-left: 8px;
+}
+
+#divCliVip #cper h4 {
+	display: inline;
+	margin: 0;
+	font-size: 18px;
+}
+
+#divCliVip .btn,
+#divCliVip input[type="button"] {
+	display: block;
+	margin-top: 18px;
+	padding: 8px 22px;
+}
+
+/* --- Mesa ocupada: ficha de la reserva --- */
+.ficha {
+	display: grid;
+	grid-template-columns: max-content 1fr max-content 1fr;
+	gap: 8px 16px;
+	margin: 0 0 16px;
+	padding: 16px 18px;
+	border: 1px solid #333;
+	border-radius: 12px;
+}
+
+.ficha dt {
+	color: #a9a9b3;
+	font-weight: normal;
+}
+
+.ficha dd {
+	margin: 0;
+	font-weight: 700;
+	word-break: break-word;
+}
+
+.ficha .ancho {
+	grid-column: 2 / -1;
+}
+
+.ficha dd .mesa-dato {
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.ficha select {
+	height: 30px;
+	margin-right: 6px;
+}
+
+.ajustes {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+/* --- Barra de acciones --- */
+.acciones {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 18px;
+	padding-top: 16px;
+	border-top: 1px solid #333;
+}
+
+.acciones .traslado {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: 6px;
+	padding-left: 16px;
+	border-left: 1px solid #333;
+}
+
+.acciones .traslado select {
+	height: 34px;
+	min-width: 130px;
+}
+
+.acciones .al-final {
+	margin-left: auto;
+}
+
+.btn-secundario {
+	color: #fff;
+	background-color: #222;
+	border-color: #777;
+}
+
+.btn-secundario:hover,
+.btn-secundario:focus {
+	color: #fff;
+	background-color: #333;
+}
+
+.btn-peligro {
+	color: #fff;
+	background-color: #b21623;
+	border-color: #d42a38;
+}
+
+.btn-peligro:hover,
+.btn-peligro:focus {
+	color: #fff;
+	background-color: #d42a38;
+}
+
+/* --- Interruptor de mesa (alterna la marca que usa el filtro "Grupo Inamovible") --- */
+.onoffswitch {
+	position: relative;
+	width: 90px;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.onoffswitch-checkbox {
+	display: none;
+}
+
+.onoffswitch-label {
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	border: 2px solid #999999;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+.onoffswitch-inner {
+	display: block;
+	width: 200%;
+	margin-left: -100%;
+	transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+	display: block;
+	float: left;
+	width: 50%;
+	height: 30px;
+	padding: 0;
+	box-sizing: border-box;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 30px;
+}
+
+.onoffswitch-inner:before {
+	content: "BIEN";
+	padding-left: 10px;
+	background-color: #0099ff;
+}
+
+.onoffswitch-inner:after {
+	content: "MAL";
+	padding-right: 10px;
+	background-color: #ff0000;
+	text-align: right;
+}
+
+.onoffswitch-switch {
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 56px;
+	width: 18px;
+	margin: 6px;
+	border: 2px solid #999999;
+	border-radius: 20px;
+	background: #fff;
+	transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+	margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+	right: 0;
+}
+
+@media (max-width: 700px) {
+	.opciones {
+		grid-template-columns: 1fr;
+	}
+
+	.ficha {
+		grid-template-columns: max-content 1fr;
+	}
+
+	.ficha .ancho {
+		grid-column: 2;
+	}
+}

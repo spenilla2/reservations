@@ -1,0 +1,47 @@
+/* Tema comun de SIRR: colores del logo (images/logo_prin.jpg) y fondo de pagina.
+   Lo cargan el login y las demas pantallas; cambiar el fondo aqui lo cambia en todas. */
+:root {
+	--rojo: #b21623;
+	--rojo-claro: #d42a38;
+	--fondo: #0d0d10;
+	--tarjeta: #17171c;
+	--borde: #2a2a32;
+	--texto: #f3f3f5;
+	--texto-suave: #9a9aa6;
+}
+
+html {
+	min-height: 100%;
+}
+
+body {
+	background:
+		radial-gradient(900px 600px at 85% -10%, rgba(178, 22, 35, 0.35), transparent 60%),
+		radial-gradient(700px 500px at -10% 110%, rgba(178, 22, 35, 0.22), transparent 60%),
+		var(--fondo);
+	background-attachment: fixed;
+}
+
+/* Logo centrado en la parte superior de las paginas internas. */
+.logo-interno {
+	margin: 0 0 22px;
+	text-align: center;
+}
+
+.logo-interno img {
+	width: 96px;
+	height: 96px;
+	border-radius: 20px;
+	box-shadow: 0 10px 26px rgba(178, 22, 35, 0.45);
+}
+
+/* En la pagina de inicio, que no tiene mas contenido, el logo va grande. */
+.logo-interno.grande {
+	margin-top: 8vh;
+}
+
+.logo-interno.grande img {
+	width: 200px;
+	height: 200px;
+	border-radius: 40px;
+}

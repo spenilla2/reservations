@@ -1,0 +1,6 @@
+# Carpeta de imagenes subidas desde la administracion de eventos: aqui no se ejecuta ni se sirve codigo.
+<IfModule mod_authz_core.c>
+	<FilesMatch "\.(php\d?|phtml|phar|pl|py|cgi|sh)$">
+		Require all denied
+	</FilesMatch>
+</IfModule>

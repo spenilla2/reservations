@@ -1,180 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-	<meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-	<title>Sistema para el Registro de Reservas (SIRR)</title>
-	<script language="JavaScript" type="text/javascript" src="js/scripts.js"></script>
-	<script src="js/jquery.js"></script>
-	<script src="js/jquery-latest.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<title>Reservas | Living Night Club</title>
+	<link rel="icon" href="images/logo_prin.jpg">
+	<link href="css/tema.css" rel="stylesheet" type="text/css">
+	<link href="css/login.css" rel="stylesheet" type="text/css">
 </head>
-<style>
-body{
-	background: url(images/fondo1.jpg) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-</style>
 <body>
-	<br>	
-	<header>
-		<img class="head" src="images/header.jpg">
-	</header>
-	<br>
-	<section class="container" style="background-color: white;border-radius: 0.5em 0.5em 0.5em 0.5em;
-    -moz-border-radius: 0.5em 0.5em 0.5em 0.5em;
-    -webkit-border-radius: 0.5em 0.5em 0.5em 0.5em;
-    -webkit-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
-    -moz-box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
-    box-shadow: 15px 15px 44px -7px rgba(0,0,0,0.32);
-    ">
-	<div class="row">	
-	  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">	
-		<h3>Sistema para el Registro de Reservas en Living Night Club.</h3>
-	  </div>
-	</div>
-	<div class="row" style="text-align: center;">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<br>
-			<div class="section3" >		 
-			  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" >
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="5"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="6"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="7"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="8"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="9"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="10"></li>
-  </ol>
+	<main class="acceso">
+		<section class="cartelera" id="cartelera" aria-label="Pr&oacute;ximos eventos">
+			<img src="images/Eventos/rose.png" alt="De La Rose, Latam Tour: viernes 23 de octubre en Living, Cali">
+			<img src="images/Eventos/luar.png" alt="Luar La L: 27 de noviembre en Living, Cali" loading="lazy">
+			<img src="images/Eventos/cantina.png" alt="La Cantina Blanca con Choco Orta y Brenda K Starr: lunes 21 de diciembre en Living" loading="lazy">
+			<img src="images/Eventos/feria.png" alt="Feria de Cali en Living, del 25 al 30 de diciembre: Luister La Voz, Willy Garc&iacute;a, Luis Alberto Posada, Luis Alfonso, Amilcar Boscan y Conjunto Chaney" loading="lazy">
+			<p class="cartelera-nota" id="carteleraNota" hidden></p>
+			<div class="cartelera-puntos" id="carteleraPuntos"></div>
+		</section>
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img src="images/Dias/1.jpg" alt="...">
-      <div class="carousel-caption">
-         
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/2.jpg" alt="...">
-      <div class="carousel-caption">
-         
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/3.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/5.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/6.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/4.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/9.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    <div class="item">
-      <img src="images/Dias/8.jpg" alt="...">
-      <div class="carousel-caption">
-        
-      </div>
-    </div>
-    
-    <div class="item">
-      <img src="images/Dias/7.jpg" alt="...">
-      <div class="carousel-caption">
-       
-      </div>
-    </div>
-    
-    <div class="item">
-      <img src="images/Dias/10.jpg" alt="...">
-      <div class="carousel-caption" style="background-color: rgba(255, 0, 0, 0.5);">
-       <strong><h3>Solo si el Lunes es Festivo</h3></strong>
-      </div>
-    </div>
-    
-  </div>
+		<section class="tarjeta">
+			<img class="tarjeta-logo" src="images/logo_prin.jpg" alt="Living" width="200" height="200">
+			<h1>Reserva tu mesa</h1>
+			<p class="tarjeta-sub">Ingresa para hacer y consultar tus reservas en Living Night Club.</p>
 
-
-  <!-- Controls -->
-  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-</div>
-		<div class="col-lg-12 col-md-12 col-sm-12" style="margin:auto;padding:auto;">
-		<br>
-		 <div class="section2" style="border:1px solid lightgray;">	
-			<form id="loger" class="form-horizontal mitad" onsubmit="ValidaPass()" style="padding-left:0.5em;">
-				<fieldset>
-					<h3>Iniciar Sesi&oacute;n</h3>
-					<div class="form-group">
-						<label class="col-lg-3 control-label col-sm-4 col-md-3 col-xs-12">
-							Usuario:
-						</label>
-					<div class="col-lg-8 col-sm-7 col-md-8 col-xs-11">
-	 					<input type="text" class="form-control" placeholder="Correo Electr&oacute;nico" id="User" title="mail@example.com" size="40" value="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required >
+			<form id="loger" novalidate>
+				<div class="campo">
+					<label for="User">Correo electr&oacute;nico</label>
+					<input type="email" id="User" name="user" placeholder="correo@ejemplo.com" autocomplete="username" required>
+				</div>
+				<div class="campo">
+					<label for="Pass">Contrase&ntilde;a</label>
+					<div class="campo-caja">
+						<input type="password" id="Pass" name="pass" class="con-boton" placeholder="Tu contrase&ntilde;a" autocomplete="current-password" required>
+						<button type="button" class="ver-clave" id="verClave" aria-pressed="false">Mostrar</button>
 					</div>
-	 		   		</div>
-	 		   		<div class="form-group">
-						<label class="col-lg-3 col-sm-4 control-label col-md-3 col-xs-12">
-							Contrase&ntilde;a:
-						</label>
-					<div class="col-lg-8 col-sm-7 col-md-8 col-xs-11">
-	 					<input type="password" class="form-control" size="20" placeholder="Contrase&ntilde;a" value="" id="Pass" required>
-					
-					</div>
-	 		   		</div>
-
-					<button class="btn btn-primary" type="button" id="botonr" align="center" onclick="ValidaPass()">Ingresar</button>
-					<p class="menpeq"><br>Si olvidaste tu contrase&ntilde;a haz clic <a href="rpas.php">AQUI</a></p>
-				</fieldset>
+				</div>
+				<a class="olvido" href="rpas.php">&iquest;Olvidaste tu contrase&ntilde;a?</a>
+				<p class="aviso" id="aviso" role="alert" hidden></p>
+				<button class="boton" type="submit" id="botonr">Ingresar</button>
 			</form>
-			
-		</div>
-		</div>
-	</div>
-	<div class="row">
-	  <div class="col-md-12">	
-		<h3>Si aun no te has registrado realiza tu registro <a href="registro.php">AQUI</a></h3>
-	  </div>
-	</div>		
-	</section>
-	<br><br>
+
+			<p class="registro">&iquest;A&uacute;n no tienes cuenta? <a href="registro.php">Reg&iacute;strate</a></p>
+		</section>
+	</main>
+
+	<script src="js/scripts.js"></script>
+	<script src="js/login.js"></script>
 </body>
 </html>

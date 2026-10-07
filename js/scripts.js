@@ -83,7 +83,8 @@ function GoModificar(){
 	}else{
 	    fecha=fecha;
 	}
-	location.href="reserva.php?fecha="+fecha+'&Tipo=U&Rnum='+res+'&MA='+Mesa;
+	// window.top: si la mesa esta abierta en la ventana modal, el formulario ocupa la pagina completa
+	window.top.location.href="reserva.php?fecha="+fecha+'&Tipo=U&Rnum='+res+'&MA='+Mesa;
 
 }
 function EntrMani(){
@@ -259,7 +260,6 @@ function ActMCompartida(){
 		var ll = ajax.responseText.toString();
 		if(ll==1){
 			alert("Cantidad de Personas Actualizadas Satisfactoriamente");
-			parent.parent.GB_hide();
 			location.reload(true);
 		}else{
 		}
@@ -971,6 +971,12 @@ function ValidaReserva(){
 	    }
 	}
 }
+// Mensaje que queda en pantalla cuando una reserva se crea o se actualiza.
+function mensajeReservaLista(accion, numero){
+	return '<div class="alert alert-success" role="status"><strong>Reserva No. '+parseInt(numero, 10)+' '+accion.toLowerCase()+'.</strong> '
+		+ 'Puedes verla, modificarla o cancelarla en <a href="consultaReservas.php">Consultar Reservas</a>, '
+		+ 'o <a href="reserva2.php?Tipo=I&MA=0">hacer otra reserva</a>.</div>';
+}
 function Reservar(){
 	var form = document.getElementById("reserva");
 	var elements=form.elements.length;
@@ -1019,12 +1025,12 @@ function Reservar(){
 	  	ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	  	var Cadena=('guard='+Type
 	  			  +'&id='+idLiv
-	  		      +'&NombreRese='+NReserva
+	  		      +'&NombreRese='+encodeURIComponent(NReserva)
 	  		      +'&Numper='+NNumperson
 	  		      +'&TipoR='+TReserva
-	  		      +'&Fecha='+FechaReserva
-	  		      +'&NHomena='+RHomenajeado
-	  		      +'&Observa='+RObserva
+	  		      +'&Fecha='+encodeURIComponent(FechaReserva)
+	  		      +'&NHomena='+encodeURIComponent(RHomenajeado)
+	  		      +'&Observa='+encodeURIComponent(RObserva)
 	  		      +'&NumReserva='+RNumReserva
 	  		      +'&ClienteVIP='+Cadadicional);
 	  	ajax.send(Cadena);
@@ -1033,8 +1039,9 @@ function Reservar(){
 		  var ll = ajax.responseText.toString();
 		  Cad=ll.substring(0,3);
 		  if(Cad=="EI1"){
-		  	alert("Ya existe una reserva realizada por usted para este mismo dia, con las mismas Caracteristicas!");
-		  	parent.parent.GB_hide();
+		  	// el formulario ya fue reemplazado por el aviso de "procesando": se deja un mensaje con salida
+		  	document.getElementById("resform").innerHTML='<div class="alert alert-warning" role="alert"><strong>Ya tienes una reserva igual para ese d&iacute;a.</strong> '
+		  		+ 'Rev&iacute;sala en <a href="consultaReservas.php">Consultar Reservas</a> o <a href="reserva2.php?Tipo=I&MA=0">elige otra fecha</a>.</div>';
 		  }else{
 		  	if(Cad=="IC1"||Cad=="UC1"){
 		  		var cadt="";
@@ -1045,11 +1052,11 @@ function Reservar(){
 		  		}
 		  		t=ll.split(";");
 		  		if(RecibeCorreo){
-		  			document.getElementById("resform").innerHTML='<div class="row"><div class="col-md-12"><div class="alert alert-success"><button class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-circle"></span></button><strong>Alerta:</strong> Reserva '+cadt+' Satisfactoriamente! </div></div></div>';
+		  			document.getElementById("resform").innerHTML=mensajeReservaLista(cadt, t[1]);
 		  			location.href="correoReserva.php?reserva="+t[1];
 		  			//location.href="reserva2.php?Tipo=I";
 		  		}else{
-		  			document.getElementById("resform").innerHTML='<div class="row"><div class="col-md-12"><div class="alert alert-success"><button class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-circle"></span></button><strong>Alerta:</strong> Reserva '+cadt+' Satisfactoriamente! </div></div></div>';
+		  			document.getElementById("resform").innerHTML=mensajeReservaLista(cadt, t[1]);
 		  			//location.href="reserva2.php?Tipo=I";
 		  		}
 		  		
@@ -1110,6 +1117,11 @@ function ValidaPass(){
 	
 }
 function GoBack(){
+	// dentro de la ventana modal del tablero, "Volver" la cierra
+	if(window.parent!==window && typeof window.parent.cerrarModalMesa=="function"){
+		window.parent.cerrarModalMesa();
+		return;
+	}
 	history.back(1);
 }
 function GoPrin(){
@@ -1385,15 +1397,37 @@ var Base64 = {
 		return string;
 	}
 }
-    function pintar(mesa, color){
-        document.getElementById(mesa).style.background=color;
-        document.getElementById(mesa).style.borderColor="black";
-        document.getElementById(mesa).style.color="white";
+    // En la base las barras son B1..B16; en el tablero sus celdas son B01..B16.
+    function idCeldaMesa(mesa){
+        mesa = String(mesa).trim();
+        if(/^B[0-9]$/.test(mesa)){
+            mesa = "B0"+mesa.substr(1);
+        }
+        return mesa;
     }
-    function pintarBlanco(mesa){
-        document.getElementById(mesa).style.background="white";
-        document.getElementById(mesa).style.color="white";
-        document.getElementById(mesa).style.borderColor="white";
+    // Texto negro sobre colores claros y blanco sobre oscuros, para que el numero de mesa siempre se lea.
+    function colorDeTexto(fondo){
+        var hex = String(fondo).trim().replace("#","");
+        if(!/^[0-9a-fA-F]{6}$/.test(hex)){
+            return "white";
+        }
+        var r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
+        return (r*299 + g*587 + b*114)/1000 > 150 ? "black" : "white";
+    }
+    function pintar(mesa, color){
+        var celda = document.getElementById(idCeldaMesa(mesa));
+        if(!celda){
+            return;
+        }
+        celda.style.background=String(color).trim();
+        celda.style.color=colorDeTexto(color);
+    }
+    // Saca la mesa de la vista (la usan los filtros); iniciaSalon() la devuelve.
+    function ocultarMesa(mesa){
+        var celda = document.getElementById(idCeldaMesa(mesa));
+        if(celda){
+            celda.classList.add("oculta");
+        }
     }
     function LanzaURL1(caso){
     	url="";
@@ -1412,115 +1446,113 @@ var Base64 = {
     	}
     	window.location.href=url;
     }
+    // Abre una pantalla del salon en la ventana modal del tablero (componente modal de Bootstrap 5), sin salir de el.
+    function modalMesa(){
+        var elemento = document.getElementById("modalMesa");
+        if(!elemento.dataset.preparada){
+            elemento.dataset.preparada = "1";
+            // al cerrarse por cualquier via (X, Esc, clic fuera, Volver) el tablero se recarga para reflejar los cambios
+            elemento.addEventListener("hidden.bs.modal", function(){
+                document.getElementById("marcoMesa").src="about:blank";
+                location.reload();
+            });
+        }
+        return bootstrap.Modal.getInstance(elemento) || new bootstrap.Modal(elemento);
+    }
+    function abrirModalMesa(url, titulo){
+        document.getElementById("marcoMesa").src=url;
+        document.getElementById("tituloModalMesa").textContent=titulo || "Gestión de la mesa";
+        modalMesa().show();
+    }
+    function cerrarModalMesa(){
+        modalMesa().hide();
+    }
     function lanzaURL(mesa){
         fechad=document.getElementById("fechadash").value;
-        window.location.href="GestionMesa.php?mesa="+mesa+"&fecha="+fechad;
+        abrirModalMesa("GestionMesa.php?mesa="+mesa+"&fecha="+fechad, "Gestión de la mesa · "+fechad);
     }
     function lanzaURL3(reserva){
-        window.location.href="GestionMesaA.php?reserva="+reserva;
+        abrirModalMesa("GestionMesaA.php?reserva="+reserva);
     }
     
-    function Vacias(){
-    	iniciaSalon()
-        fechad=document.getElementById("fechadash").value;
-        datos = "Querys.php";
-        ajax=objetoAjax();
-        ajax.open('POST', datos,true);
-        ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        var CadenaEnv="guard=BMOD&fecha="+fechad;
-        ajax.send(CadenaEnv);
-        ajax.onreadystatechange=function() {
-        if (ajax.readyState==4) {
-            var ll = ajax.responseText.toString();
-            var Cadena = ll.split(";");
-            var nfilas=Cadena[0];
-            var Cad2 = "";
-            for(var i=0;i<nfilas;i++){
-                Mesa = Cadena[(i+1)];
-                Cad2+=Mesa+"<br>";
-                pintarBlanco(Mesa);    
+    // Pide a Querys.php una lista "n;mesa;mesa;..." y entrega las mesas como arreglo.
+    function pedirMesas(parametros, alTerminar){
+        var peticion = objetoAjax();
+        peticion.open('POST', "Querys.php", true);
+        peticion.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        peticion.onreadystatechange=function() {
+            if (peticion.readyState==4) {
+                var partes = peticion.responseText.toString().split(";");
+                var total = parseInt(partes[0], 10) || 0;
+                alTerminar(partes.slice(1, total+1));
             }
-            
-            
         }
-        }
+        peticion.send(parametros);
     }
-    function TipoRes(tipo){
-    	fechad=document.getElementById("fechadash").value;
-        datos = "Querys.php";
-        ajax=objetoAjax();
-        ajax.open('POST', datos,true);
-        ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        var CadenaEnv="guard=STRE&fecha="+fechad+"&tipo="+tipo;
-        ajax.send(CadenaEnv);
-        
-        ajax.onreadystatechange=function() {
-        if (ajax.readyState==4) {
-            var ll = ajax.responseText.toString();
-            var Cadena = ll.split(";");
-            var nfilas=Cadena[0];
-            var Cad2 = "";
-            for(var i=0;i<nfilas;i++){
-                Mesa = Cadena[(i+1)];
-                Cad2+=Mesa+"<br>";
-                pintarBlanco(Mesa);    
+    // Deja a la vista solo las mesas libres.
+    function Vacias(){
+    	iniciaSalon();
+        var fechad=document.getElementById("fechadash").value;
+        pedirMesas("guard=BMOD&fecha="+fechad, function(ocupadas){
+            for(var i=0;i<ocupadas.length;i++){
+                ocultarMesa(ocupadas[i]);
             }
-        }
-        }	
+        });
+    }
+    // Deja a la vista, con su color, solo las mesas ocupadas que cumplen el filtro.
+    function TipoRes(tipo){
+        pintarSalon(function(ocupadas){
+            var fechad=document.getElementById("fechadash").value;
+            pedirMesas("guard=STRE&fecha="+fechad+"&tipo="+tipo, function(fuera){
+                var visibles = {};
+                for(var i=0;i<ocupadas.length;i++){
+                    visibles[ocupadas[i]] = true;
+                }
+                for(var j=0;j<fuera.length;j++){
+                    delete visibles[idCeldaMesa(fuera[j])];
+                }
+                var celdas = document.getElementsByClassName("mesa");
+                for(var k=0;k<celdas.length;k++){
+                    if(!visibles[celdas[k].id]){
+                        ocultarMesa(celdas[k].id);
+                    }
+                }
+            });
+        });
     } 
     function iniciaSalon(){
-    	for(i=8;i<=80;i++){
-    		document.getElementById(i).style.background="white";
-        	document.getElementById(i).style.borderColor="black";
-        	document.getElementById(i).style.color="black";		
-    	}
-		/*
-    	for(i=1;i<=16;i++){
-    		document.getElementById(("B"+i)).style.background="white";
-        	document.getElementById(("B"+i)).style.borderColor="black";
-        	document.getElementById(("B"+i)).style.color="black";		
-    	}*/
-    	/*for(i=1;i<=2;i++){
-    		document.getElementById(("A"+i)).style.background="white";
-        	document.getElementById(("A"+i)).style.borderColor="black";
-        	document.getElementById(("A"+i)).style.color="black";		
-    	}*/
-    	
-    	for(i=1;i<=7;i++){
-    		document.getElementById(("P"+i)).style.background="white";
-        	document.getElementById(("P"+i)).style.borderColor="black";
-        	document.getElementById(("P"+i)).style.color="black";	
-    	}
-
+        var celdas = document.getElementsByClassName("mesa");
+        for(var i=0;i<celdas.length;i++){
+            // sin estilos propios la celda vuelve al aspecto de mesa libre que define la hoja de estilos
+            celdas[i].style.background="";
+            celdas[i].style.color="";
+            celdas[i].classList.remove("oculta");
+        }
     }
-    function pintarSalon(){
+    // Pinta cada mesa ocupada con el color de su tipo de asignacion.
+    // alTerminar (opcional) recibe los ids de las celdas ocupadas.
+    function pintarSalon(alTerminar){
     	iniciaSalon();
-        let fechad = document.getElementById("fechadash").value;
-		console.log(fechad);
-        datos = "Querys.php";
-        ajax=objetoAjax();
-        ajax.open('POST', datos,true);
-        ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        var CadenaEnv="guard=TMCD&fecha="+fechad;
-        ajax.send(CadenaEnv);
-        ajax.onreadystatechange=function() {
-        if (ajax.readyState==4) {
-            var ll = ajax.responseText.toString();
-            var Cadena = ll.split(";");
-            var nfilas=Cadena[0].split("|");
-            var Cad2 = "";
-            for(var i=0;i<nfilas[0];i++){
-                Cad1 = Cadena[(i+1)].split("|");
-                Mesa = Cad1[0];
-                Color = Cad1[1];
-                Cad2+=Mesa+"-->"+Color+"<br>";
-                pintar(Mesa,Color);    
+        var fechad = document.getElementById("fechadash").value;
+        var peticion = objetoAjax();
+        peticion.open('POST', "Querys.php", true);
+        peticion.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        peticion.onreadystatechange=function() {
+            if (peticion.readyState==4) {
+                var Cadena = peticion.responseText.toString().split(";");
+                var nfilas = parseInt(Cadena[0].split("|")[0], 10) || 0;
+                var ocupadas = [];
+                for(var i=0;i<nfilas;i++){
+                    var Cad1 = Cadena[(i+1)].split("|");
+                    pintar(Cad1[0], Cad1[1]);
+                    ocupadas.push(idCeldaMesa(Cad1[0]));
+                }
+                if(typeof alTerminar=="function"){
+                    alTerminar(ocupadas);
+                }
             }
-           
-            
         }
-        }
-
+        peticion.send("guard=TMCD&fecha="+fechad);
     }
 function control(comp){
 	var comp1="";

@@ -1,9 +1,4 @@
 <?php
-session_start();
-session_unset();
-session_destroy();
-?>
-	  <script>
-	  		alert("Sesion desconectada Satisfactoriamente!");
-	  		location.href="index.html";
-	  </script>
+// Archivo de entrada: la logica esta en app/ (ver app/rutas.php).
+require(__DIR__."/app/arranque.php");
+Despachador::pagina(__FILE__);

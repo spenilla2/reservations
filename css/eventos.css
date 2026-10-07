@@ -1,0 +1,217 @@
+/* Administracion de eventos. Se apoya en reservas.css (tarjeta y campos) y en tema.css (colores). */
+.ev-tarjeta {
+	max-width: 900px;
+	margin-bottom: 28px;
+}
+
+.ev-tarjeta:last-child {
+	margin-bottom: 90px;
+}
+
+.ev-aviso {
+	margin: 0 0 20px;
+	padding: 12px 16px;
+	border: 1px solid;
+	border-radius: 12px;
+}
+
+.ev-aviso.bien {
+	border-color: rgba(107, 220, 139, 0.6);
+	background: rgba(107, 220, 139, 0.12);
+	color: #b9f2c8;
+}
+
+.ev-aviso.mal {
+	border-color: rgba(212, 42, 56, 0.6);
+	background: rgba(178, 22, 35, 0.16);
+	color: #ffc9ce;
+}
+
+.rv-campo input[type="file"] {
+	height: auto;
+	padding: 11px 14px;
+	font-size: 14px;
+}
+
+.ev-vista {
+	display: block;
+	max-width: 100%;
+	max-height: 220px;
+	margin-top: 10px;
+	border-radius: 10px;
+}
+
+.ev-vista[hidden] {
+	display: none;
+}
+
+.ev-ayuda {
+	margin: -8px 0 18px;
+}
+
+/* --- Lista de proximos eventos --- */
+.ev-lista {
+	display: grid;
+	gap: 16px;
+	margin-top: 18px;
+}
+
+.ev-evento {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 20px;
+	padding: 16px;
+	border: 1px solid var(--borde);
+	border-radius: 14px;
+	background: #101014;
+}
+
+.ev-imagenes {
+	display: flex;
+	gap: 10px;
+}
+
+.ev-imagenes a,
+.ev-sin-imagen {
+	position: relative;
+	display: block;
+	width: 110px;
+	height: 147px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.ev-imagenes img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.ev-imagenes a span {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 3px 0;
+	background: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+
+.ev-sin-imagen {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed var(--borde);
+	color: var(--texto-suave);
+	font-size: 12px;
+	text-align: center;
+}
+
+.ev-datos h2 {
+	margin: 2px 0 6px;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.ev-fecha {
+	margin: 0 0 8px;
+	color: var(--texto-suave);
+}
+
+.ev-fecha::first-letter {
+	text-transform: uppercase;
+}
+
+.ev-reservas {
+	display: inline-block;
+	margin: 0 0 14px;
+	padding: 3px 12px;
+	border: 1px solid;
+	border-radius: 999px;
+	font-size: 13px;
+}
+
+.ev-reservas.si {
+	color: #6bdc8b;
+}
+
+.ev-reservas.no {
+	color: #ffb454;
+}
+
+.ev-acciones {
+	display: flex;
+	gap: 8px;
+}
+
+.ev-acciones form {
+	margin: 0;
+}
+
+/* --- Eventos pasados --- */
+.ev-pasados {
+	margin-top: 22px;
+	padding-top: 16px;
+	border-top: 1px solid var(--borde);
+	color: var(--texto-suave);
+}
+
+.ev-pasados summary {
+	cursor: pointer;
+}
+
+.ev-pasados table {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.ev-pasados td {
+	padding: 6px 8px 6px 0;
+	border-bottom: 1px solid var(--borde);
+}
+
+.ev-pasados form {
+	display: flex;
+	justify-content: flex-end;
+	gap: 14px;
+	margin: 0;
+}
+
+.ev-pasados a,
+.ev-enlace {
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--texto);
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+@media (max-width: 640px) {
+	.ev-evento {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* los dos botones de cada evento con el mismo tamano, sobre fondo oscuro */
+.ev-acciones .btn {
+	padding: 5px 14px;
+	border-radius: 8px;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 1.5;
+}
+
+.ev-acciones .btn-default {
+	border-color: var(--borde);
+	background: #22222a;
+	color: var(--texto);
+}
+
+.ev-acciones .btn-default:hover,
+.ev-acciones .btn-default:focus {
+	background: #2d2d37;
+	color: var(--texto);
+}
