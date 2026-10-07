@@ -1,0 +1,4 @@
+# Carpeta de desarrollo: no se sirve por web.
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>

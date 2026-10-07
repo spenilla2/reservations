@@ -1,3 +1,17 @@
+# Registro de errores de PHP del hosting
 error_log
-sirr-config.php
+
+# Credenciales reales: viven un nivel arriba de la carpeta publica (ver sirr-config.ejemplo.php)
+/sirr-config.php
+
+# Volcados de la base de datos: traen datos de clientes
+data/
+*.sql.gz
+
+# Imagenes subidas desde Gestion > Eventos
+images/Eventos/evento_*
+
 *.bak
+
+# Python
+__pycache__/
